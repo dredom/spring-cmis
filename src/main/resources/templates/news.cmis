@@ -1,0 +1,4 @@
+# Configure CMIS relationship
+object=bean
+bean.provider=switch
+bean.id=content/bean.content

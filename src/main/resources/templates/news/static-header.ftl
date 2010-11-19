@@ -1,0 +1,1 @@
+<i>Heading for news</i>
