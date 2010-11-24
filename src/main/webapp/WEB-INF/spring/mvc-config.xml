@@ -23,7 +23,9 @@
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
 
 	<!-- Use to expose static resources, see ResourceHttpRequestHandler -->
+<!-- 
 	<mvc:resources mapping="/css-#{applicationProps['version']}/**" location="/styles/" cache-period="31556926"/>
+ -->
 	
 	
 	<bean id="switchController" class="com.lvls.cmis.control.SwitchController"/>

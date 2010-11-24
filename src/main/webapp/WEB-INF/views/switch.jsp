@@ -7,10 +7,10 @@
 <head>
 	<META http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title><fmt:message key="welcome.title"/></title>
-	<link rel="stylesheet" href="<c:url value="/styles/blueprint/screen.css" />" type="text/css" media="screen, projection">
-	<link rel="stylesheet" href="<c:url value="/styles/blueprint/print.css" />" type="text/css" media="print">
+	<link rel="stylesheet" href="<c:url value="/styles/switch.css" />" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="<c:url value="/styles/switch-print.css" />" type="text/css" media="print">
 	<!--[if lt IE 8]>
-		<link rel="stylesheet" href="<c:url value="/styles/blueprint/ie.css" />" type="text/css" media="screen, projection">
+		<link rel="stylesheet" href="<c:url value="/styles/switch-ie.css" />" type="text/css" media="screen, projection">
 	<![endif]-->
 </head>
 <body>
@@ -33,6 +33,7 @@
 	<ul>
 		<li> <a href="?locale=en_us">us</a> |  <a href="?locale=en_gb">gb</a> | <a href="?locale=es_es">es</a> | <a href="?locale=de_de">de</a> </li>
 	</ul>
+	<img src="images/amy.jpg"/>
 </div>
 </body>
 </html>
