@@ -19,9 +19,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class UrlMappingServiceTest {
 
 	static String[][] testData = {
-		{ "/hello", "" },
-		{ "/hello/.*", "name" },
-		{ "/product/.*/.*", "fruit,name" },
+		{ "/hello/*", "" },
+		{ "/hello/[^/]*", "name" },
+		{ "/product/[^/]*/[^/]*", "fruit,name" },
 	};
 	static Pattern[] uriPatternsCompiled;
 	static Map<String, String[]> uriPatternPathNames;
@@ -45,30 +45,41 @@ public class UrlMappingServiceTest {
 	public void mapUrlSimple() {
 		service.setUriPatternsCompiled(uriPatternsCompiled);
 		String appRequestUri = "/hello";
-		String expected = "/hello";
+		String expected = "/hello/*";
 		String result = service.getUriPattern(appRequestUri);
 		assertNotNull(result);
 		assertEquals(expected, result);
+		String result2 = service.getUriPattern("/hello/");
+		assertNotNull(result2);
+		assertEquals(expected, result2);
 	}
 
 	@Test
 	public void mapUrlPattern() {
 		service.setUriPatternsCompiled(uriPatternsCompiled);
 		String appRequestUri = "/hello/joleen";
-		String expected = "/hello/.*";
+		String expected = "/hello/[^/]*";
 		String result = service.getUriPattern(appRequestUri);
 		assertNotNull("request uri = " + appRequestUri, result);
 		assertEquals(expected, result);
 	}
 
 	@Test
+	public void mapUrlPatternNotMapped() {
+		service.setUriPatternsCompiled(uriPatternsCompiled);
+		String appRequestUri = "/hello/joleen/brady";
+		String result = service.getUriPattern(appRequestUri);
+		assertNull("request uri = " + appRequestUri, result);
+	}
+
+	@Test
 	public void pathValues() {
 		service.setUriPatternPathNames(uriPatternPathNames);
 		String appRequestUri = "/hello/joleen";
-		String uriPattern = "/hello/.*";
+		String uriPattern = "/hello/[^/]*";
 		String expectedKey = "name";
 		String expectedValue = "joleen";
-		Map<String, String> result = service.getPathValues(appRequestUri, uriPattern);
+		Map<String, String> result = service.getPathSegmentValues(appRequestUri, uriPattern);
 		assertNotNull("request uri = " + appRequestUri, result);
 		assertTrue(result.containsKey(expectedKey));
 		assertEquals(expectedValue, result.get(expectedKey));
@@ -87,7 +98,7 @@ public class UrlMappingServiceTest {
 		String uriPattern = service.getUriPattern(appRequestUri);
 		long time = System.currentTimeMillis() - start;
 		System.out.println(" pathValuesMulti " + time + "ms");
-		Map<String, String> result = service.getPathValues(appRequestUri, uriPattern);
+		Map<String, String> result = service.getPathSegmentValues(appRequestUri, uriPattern);
 		assertNotNull("request uri = " + appRequestUri, result);
 		assertTrue(expectedKey, result.containsKey(expectedKey));
 		assertEquals(expectedValue, result.get(expectedKey));

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Regex path name patterns in style <pre>
+ * Regex path segment name patterns in style <pre>
  *   {myname}
  *   {myname: [a-z]}
  * </pre>
@@ -26,9 +25,10 @@ import org.apache.commons.logging.LogFactory;
  */
 public class UriMappingConfigFactoryImpl implements UriMappingConfigFactory {
 
-	private static Pattern NAME_PATTERN = Pattern.compile("\\{[^}]*\\}");
+	private static final Pattern NAME_PATTERN = Pattern.compile("\\{[^}]*\\}");
+	private static final String PATH_PATTERN_STRING = "[^/]*";
 
-	private Log log = LogFactory.getLog(getClass());
+	private static Log log = LogFactory.getLog(UriMappingConfigFactory.class);
 
 	private String propertiesFilename;
 	private Properties uriMappingsProperties;
@@ -94,9 +94,9 @@ public class UriMappingConfigFactoryImpl implements UriMappingConfigFactory {
 				Pattern.compile(pattern);
 				pathPatterns[i] = pattern;
 				log.error("Custom regex patterns not supported: '" + line + "'. Use plain {name} syntax only.");
-				log.error("'{" + name + "}' is gonna fail!");
+				log.error(" '{" + name + "}' is gonna fail!");
 			} else {
-				pathPatterns[i] = ".*";
+				pathPatterns[i] = PATH_PATTERN_STRING;
 			}
 		}
 		return pathPatterns;

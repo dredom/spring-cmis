@@ -16,16 +16,23 @@ public interface UriMappingService {
 	/**
 	 * Return a URI pattern, REST style, which can be used for mapping to templates and things.
 	 * @param appRequestUri without the app prefix, eg "/hello/tom"
-	 * @return String URI pattern, eg "/hello/*"
+	 * @return String URI pattern, eg "/hello/[^/]*"
 	 */
 	String getUriPattern(String appRequestUri);
 
 	/**
+	 * Maps a URI pattern to some target key for templating.
+	 * @param uriPattern
+	 * @return String key for templating
+	 */
+	String getTargetForUriPattern(String uriPattern);
+
+	/**
 	 *
 	 * @param appRequestUri eg "/hello/tom"
-	 * @param uriPattern eg "/hello/.*"
+	 * @param uriPattern eg "/hello/[^/]*" (any characters not "/")
 	 * @return {@link Map} eg "name, tom" for a path definition of "/hello/{name}"
 	 */
-	Map<String, String> getPathValues(String appRequestUri, String uriPattern);
+	Map<String, String> getPathSegmentValues(String appRequestUri, String uriPattern);
 
 }

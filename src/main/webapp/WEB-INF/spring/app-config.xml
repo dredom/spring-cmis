@@ -16,11 +16,6 @@
 <!-- 
 	<util:properties id="applicationProps" location="/WEB-INF/spring/application.properties"/>
  -->
-	<util:properties id="uriMappings" location="/WEB-INF/spring/urlmappings.properties"/>
-
-	<bean id="uriMappingService" class="com.lvls.cmis.service.UriMappingServiceImpl">
-		<property name="uriMappings" ref="uriMappings"/>
-	</bean>
 		
 	<!-- Configures Spring MVC -->
 	<import resource="mvc-config.xml" />

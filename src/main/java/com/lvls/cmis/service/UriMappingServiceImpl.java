@@ -8,11 +8,14 @@ import java.util.regex.Pattern;
 
 public class UriMappingServiceImpl implements UriMappingService, UriMappingService_1 {
 
-	private Properties uriMappingProperties;
+	private Properties uriMappings;
 	private Pattern[] uriPatternsCompiled;
 	private Map<String, String[]> uriPatternPathNames;
 
-	private static final Pattern ANY = Pattern.compile("\\.\\*");
+	/**
+	 * "[^/]*" (any characters not "/")
+	 */
+	private static final Pattern ANY = Pattern.compile("\\[\\^/]\\*");
 
 	@Override
 	public String getUriPattern(String appRequestUri) {
@@ -27,7 +30,15 @@ public class UriMappingServiceImpl implements UriMappingService, UriMappingServi
 	}
 
 	@Override
-	public Map<String, String> getPathValues(String appRequestUri, String uriPattern) {
+	public String getTargetForUriPattern(String uriPattern) {
+		return uriMappings.getProperty(uriPattern);
+	}
+
+	/**
+	 * Note: <code>/prod/{name: [a-z]+}</code> style variable regex patterns not supported yet.
+	 */
+	@Override
+	public Map<String, String> getPathSegmentValues(String appRequestUri, String uriPattern) {
 		Matcher matcher = ANY.matcher(uriPattern);
 
 		String[] pathNames = uriPatternPathNames.get(uriPattern);
@@ -42,8 +53,8 @@ public class UriMappingServiceImpl implements UriMappingService, UriMappingServi
 	/**
 	 * Example:
 	 *  appRequestUri   /prod/apple/gala
-	 *  uriPattern      /prod/.* /.*
-	 *  matcher         .*
+	 *  uriPattern      /prod/[^/]* /[^/]*
+	 *  matcher         [^/]*
 	 *  pathNames       fruit, name - from /prod/{fruit}/{name}
 	 *
 	 * Logic:
@@ -88,8 +99,8 @@ public class UriMappingServiceImpl implements UriMappingService, UriMappingServi
 		return map;
 	}
 
-	public final void setUriMappings(Properties uriMappingProperties) {
-		this.uriMappingProperties = uriMappingProperties;
+	public final void setUriMappings(Properties uriMappings) {
+		this.uriMappings = uriMappings;
 	}
 
 	public final void setUriPatternsCompiled(Pattern[] uriPatternsCompiled) {

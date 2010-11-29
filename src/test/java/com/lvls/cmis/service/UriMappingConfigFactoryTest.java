@@ -19,7 +19,7 @@ public class UriMappingConfigFactoryTest {
 	static String[][] expectedPatternNames = {
 		{ "/hello", "" },
 		{ "/hello/[a-z]+", "name" },
-		{ "/product/.*/.*", "fruit,name" },
+		{ "/product/[^/]*/[^/]*", "fruit,name" },
 	};
 
 	private UriMappingConfigFactoryImpl service;
